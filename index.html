@@ -70,56 +70,10 @@ footer {background:#111;color:white;text-align:center;padding:20px;font-size:0.9
 
 <section id="order" class="order-section">
     <h2>Оставьте заявку на заказ</h2>
-    <form id="orderForm">
-        <input type="text" name="name" placeholder="Ваше имя" required>
-        <input type="tel" name="phone" placeholder="Телефон" required>
-        <textarea name="message" placeholder="Комментарий или выбранный товар"></textarea>
-        <button type="submit">Отправить</button>
-    </form>
-    <p id="result" style="margin-top:15px;color:green;"></p>
-</section>
 
-<footer>
-    © 2025 StyleWear. Все права защищены.
-</footer>
-
-<script>
-// === ЗАМЕНИТЕ ЭТИ ДАННЫЕ ===
-const BOT_TOKEN = "{8240786007:AAHT1lCKSKRBUR0MbQESEsJliUerfYv9gbY";   // например: 123456789:ABCdefGhIJKlmnoPQRsTuvWXyz
-const CHAT_ID  = "6010459315";      // например: 987654321
-
-const form = document.getElementById('orderForm');
-const result = document.getElementById('result');
-
-form.addEventListener('submit', function(e){
-    e.preventDefault();
-
-    const name = this.name.value.trim();
-    const phone = this.phone.value.trim();
-    const msg   = this.message.value.trim();
-    const text  = `🛍 Новый заказ с сайта StyleWear\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n💬 Сообщение: ${msg || '—'}`;
-
-    fetch(`https://api.telegram.org/bot${8240786007:AAHT1lCKSKRBUR0MbQESEsJliUerfYv9gbY}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: 6010459315, text: text, parse_mode: "HTML" })
-    })
-    .then(r => r.json())
-    .then(data => {
-        if(data.ok){
-            result.style.color = "green";
-            result.innerText = "✅ Заявка отправлена в Telegram!";
-            form.reset();
-        } else throw new Error();
-    })
-    .catch(() => {
-        result.style.color = "red";
-        result.innerText = "❌ Ошибка отправки. Проверьте настройки.";
-    });
-});
-</script>
 
 </body>
 
 </html>
+
 
