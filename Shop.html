@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleWear – Магазин одежды</title>
+<style>
+/* --- Дизайн как раньше --- */
+body {margin:0;font-family:Arial,Helvetica,sans-serif;background:#f8f8f8;color:#333;}
+header {background:#111;color:#fff;padding:20px 0;text-align:center;}
+header h1 {margin:0;font-size:2rem;}
+nav {background:#222;text-align:center;}
+nav a {display:inline-block;padding:15px 20px;color:#fff;text-decoration:none;}
+nav a:hover {background:#444;}
+.hero {background:url('https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?auto=format&fit=crop&w=1200&q=80') center/cover;
+       color:white;text-align:center;padding:80px 20px;}
+.hero h2 {font-size:2.5rem;margin:0;}
+.btn {background:#ff5a5f;color:white;padding:12px 30px;border:none;border-radius:5px;text-decoration:none;}
+.btn:hover {background:#e0484d;}
+.products {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+           gap:20px;padding:40px;max-width:1200px;margin:auto;}
+.card {background:white;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.card img {width:100%;height:300px;object-fit:cover;}
+.card h3 {margin:15px;font-size:1.2rem;}
+.card p {margin:0 15px 15px;}
+.price {color:#ff5a5f;font-weight:bold;font-size:1.1rem;}
+.order-section {background:#fff;padding:40px;text-align:center;}
+form {max-width:400px;margin:auto;text-align:left;}
+input, textarea {width:100%;padding:10px;margin-bottom:15px;border:1px solid #ccc;border-radius:5px;}
+button[type="submit"] {background:#ff5a5f;color:white;border:none;padding:12px;width:100%;border-radius:5px;cursor:pointer;font-size:1rem;}
+button[type="submit"]:hover {background:#e0484d;}
+footer {background:#111;color:white;text-align:center;padding:20px;font-size:0.9rem;}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>ГАМАЗИН ПРИ БОЛЬНИЧКЕ</h1>
+    <p>Современная одежда с доставкой по всем отделениям</p>
+</header>
+
+<nav>
+    <a href="#products">Каталог</a>
+    <a href="#order">Заказать</a>
+</nav>
+
+<section class="hero">
+    <h2>Новая коллекция осень–зима</h2>
+    <p>Будь в тренде уже сегодня</p>
+    <a href="#products" class="btn">Смотреть каталог</a>
+</section>
+
+<section id="products" class="products">
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=800&q=80" alt="Пальто">
+        <h3>Тренч женский</h3>
+        <p class="price">4 200 ₽</p>
+    </div>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80" alt="Толстовка">
+        <h3>Толстовка унисекс</h3>
+        <p class="price">2 300 ₽</p>
+    </div>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1495121605193-b116b5b09d16?auto=format&fit=crop&w=800&q=80" alt="Кроссовки">
+        <h3>Кроссовки Street</h3>
+        <p class="price">3 900 ₽</p>
+    </div>
+</section>
+
+<section id="order" class="order-section">
+    <h2>Оставьте заявку на заказ</h2>
+    <form id="orderForm">
+        <input type="text" name="name" placeholder="Ваше имя" required>
+        <input type="tel" name="phone" placeholder="Телефон" required>
+        <textarea name="message" placeholder="Комментарий или выбранный товар"></textarea>
+        <button type="submit">Отправить</button>
+    </form>
+    <p id="result" style="margin-top:15px;color:green;"></p>
+</section>
+
+<footer>
+    © 2025 StyleWear. Все права защищены.
+</footer>
+
+<script>
+// === ЗАМЕНИТЕ ЭТИ ДАННЫЕ ===
+const BOT_TOKEN = "ВАШ_BOT_TOKEN";   // например: 123456789:ABCdefGhIJKlmnoPQRsTuvWXyz
+const CHAT_ID  = "ВАШ_CHAT_ID";      // например: 987654321
+
+const form = document.getElementById('orderForm');
+const result = document.getElementById('result');
+
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = this.name.value.trim();
+    const phone = this.phone.value.trim();
+    const msg   = this.message.value.trim();
+    const text  = `🛍 Новый заказ с сайта StyleWear\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n💬 Сообщение: ${msg || '—'}`;
+
+    fetch(`https://api.telegram.org/bot${8240786007:AAHT1lCKSKRBUR0MbQESEsJliUerfYv9gbY}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: 6010459315, text: text, parse_mode: "HTML" })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if(data.ok){
+            result.style.color = "green";
+            result.innerText = "✅ Заявка отправлена в Telegram!";
+            form.reset();
+        } else throw new Error();
+    })
+    .catch(() => {
+        result.style.color = "red";
+        result.innerText = "❌ Ошибка отправки. Проверьте настройки.";
+    });
+});
+</script>
+
+</body>
+</html>
